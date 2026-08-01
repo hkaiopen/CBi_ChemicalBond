@@ -2,7 +2,7 @@
 Figure generation for CBi^- relativistic bonding study.
 
 Data sources:
-- Experimental VDEs: Kahraman et al., Science 2026, Fig. 2A
+- Experimental VDEs: Kahraman et al., Science 2026, Fig. 2A and Table 1
 - Theoretical VDEs: This work, EOM-IP-CCSD/DIRAC24, see SI Table S1
 - eta and I values: Computed from DIRAC24 wavefunctions using Eq. 8-9
 - Homologous series: This work, see SI Table S3
@@ -37,24 +37,27 @@ def sigmoid_stable(x, a, b, x0, k):
     return a + b / (1 + np.exp(-z))
 
 # ============================================================
-#  Figure 1: Spectra (2x2 with overlay)
+#  Figure 1: Spectra (2x2 with overlay) 
 # ============================================================
 def generate_spectra():
-    exp_peaks = {'X': 2.81, 'A': 3.08, 'B': 3.55}
+    # Experimental ADE values from Kahraman et al., Science 2026, Table 1
+    exp_peaks = {'X': 2.3429, 'A': 2.5812, 'B': 3.5246}
     exp_intensities = {'X': 1.0, 'A': 0.6, 'B': 0.4}
     exp_fwhm = 0.06
+    # Theoretical VDEs from this work (EOM-IP-CCSD/DIRAC24)
     theo_peaks = {'X': 2.84, 'A': 3.12, 'B': 3.58}
     vib_spacing = 0.052
     vib_intens = np.array([1.00, 0.32, 0.08])
     vib_energies = theo_peaks['X'] + np.arange(len(vib_intens)) * vib_spacing
-    E_grid = np.linspace(2.5, 4.0, 2000)
-    # Exp
+    # Energy grid expanded to cover 2.0–4.0 eV
+    E_grid = np.linspace(2.0, 4.0, 2000)
+    # Experimental spectrum
     exp_spec = np.zeros_like(E_grid)
     for label, pos in exp_peaks.items():
         sigma = exp_fwhm / (2 * np.sqrt(2 * np.log(2)))
         exp_spec += exp_intensities[label] * norm.pdf(E_grid, pos, sigma)
     exp_spec /= exp_spec.max()
-    # Theory
+    # Theoretical spectrum
     theo_spec = np.zeros_like(E_grid)
     for i, (e, amp) in enumerate(zip(vib_energies, vib_intens)):
         theo_spec += amp * norm.pdf(E_grid, e, 0.025)
@@ -66,7 +69,7 @@ def generate_spectra():
 def plot_figure1():
     E_grid, exp_spec, theo_spec, exp_peaks, theo_peaks, vib_energies, vib_intens = generate_spectra()
     fig, axes = plt.subplots(2, 2, figsize=(10, 8))
-    # (a) Exp
+    # (a) Experimental
     ax = axes[0, 0]
     ax.plot(E_grid, exp_spec, 'k-', lw=1.5)
     for label, pos in exp_peaks.items():
@@ -75,8 +78,9 @@ def plot_figure1():
     ax.set_ylabel('Intensity (a.u.)', fontsize=11)
     ax.set_title('(a) Experiment', fontsize=11)
     ax.set_ylim(0, 1.2)
+    ax.set_xlim(2.0, 4.0)
     ax.grid(True, alpha=0.2)
-    # (b) Theory
+    # (b) Theoretical
     ax = axes[0, 1]
     ax.plot(E_grid, theo_spec, color=COLORS['red'], lw=1.5)
     for label, pos in theo_peaks.items():
@@ -87,6 +91,7 @@ def plot_figure1():
     ax.set_ylabel('Intensity (a.u.)', fontsize=11)
     ax.set_title('(b) Theory (EOM-IP-CCSD)', fontsize=11)
     ax.set_ylim(0, 1.2)
+    ax.set_xlim(2.0, 4.0)
     ax.grid(True, alpha=0.2)
     # (c) Overlay
     ax = axes[1, 0]
@@ -98,6 +103,7 @@ def plot_figure1():
     ax.set_ylabel('Intensity (a.u.)', fontsize=11)
     ax.set_title('(c) Overlay: Exp vs Theory', fontsize=11)
     ax.set_ylim(0, 1.2)
+    ax.set_xlim(2.0, 4.0)
     ax.grid(True, alpha=0.2)
     # (d) Residual
     ax = axes[1, 1]
@@ -110,6 +116,7 @@ def plot_figure1():
     ax.set_ylabel('Residual', fontsize=11)
     ax.set_title('(d) Residual', fontsize=11)
     ax.set_ylim(-0.2, 0.2)
+    ax.set_xlim(2.0, 4.0)
     ax.grid(True, alpha=0.2)
     plt.tight_layout()
     plt.savefig('Figure_P0_spectra_comparison.pdf', dpi=300, bbox_inches='tight')
@@ -117,7 +124,7 @@ def plot_figure1():
     print("    → Saved Figure_P0_spectra_comparison.pdf")
 
 # ============================================================
-#  Figure 2: Orbital visualization
+#  Figure 2: Orbital visualization (unchanged)
 # ============================================================
 def spherical_harmonic_real(l, m, theta, phi):
     if l == 1 and m == 0:
@@ -202,7 +209,7 @@ def plot_figure2():
     print("    → Saved Figure_P1_orbital_mixing.pdf")
 
 # ============================================================
-#  Figure 3: Phase transition
+#  Figure 3: Phase transition (unchanged)
 # ============================================================
 def plot_figure3():
     lam_comp = np.array([0.0, 0.2, 0.4, 0.55, 0.6, 0.8, 1.0])
@@ -210,7 +217,6 @@ def plot_figure3():
     I_comp = np.array([0.08, 0.12, 0.24, 0.34, 0.36, 0.44, 0.47])
     ps_comp = np.array([0.94, 0.89, 0.78, 0.69, 0.67, 0.60, 0.58])
     lam_smooth = np.linspace(0, 1, 200)
-    # Fit with fallback
     def safe_fit(x, y, p0):
         try:
             popt, _ = curve_fit(sigmoid_stable, x, y, p0=p0, maxfev=5000)
@@ -223,7 +229,6 @@ def plot_figure3():
     ps_smooth, _ = safe_fit(lam_comp, ps_comp, [0.7, 0.3, 0.55, 0.08])
     pp_smooth = 1 - ps_smooth
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
-    # Panel (a)
     ax1.plot(lam_smooth, eta_smooth, color=COLORS['blue'], lw=2, label=r'$\eta$ (fit)')
     ax1.scatter(lam_comp, eta_comp, color=COLORS['blue'], s=60, zorder=5, label=r'$\eta$ computed', edgecolor='black', lw=0.8)
     ax1.plot(lam_smooth, I_smooth, color=COLORS['red'], lw=2, label=r'$I$ (fit, nats)')
@@ -235,7 +240,6 @@ def plot_figure3():
     ax1.grid(True, alpha=0.2)
     ax1.axvline(0.82, color=COLORS['grey'], ls='--', lw=1, alpha=0.5)
     ax1.text(0.82, 0.05, 'CBi⁻', ha='center', fontsize=10)
-    # Panel (b)
     ax2.plot(lam_smooth, ps_smooth, color=COLORS['green'], lw=2, label=r'$p_\sigma$ (fit)')
     ax2.scatter(lam_comp, ps_comp, color=COLORS['green'], s=60, zorder=5, label=r'$p_\sigma$ computed', edgecolor='black', lw=0.8)
     ax2.plot(lam_smooth, pp_smooth, color=COLORS['pink'], lw=2, label=r'$p_\pi$ (fit)')
@@ -253,7 +257,7 @@ def plot_figure3():
     print("    → Saved Figure_P2_phase_transition.pdf")
 
 # ============================================================
-#  Figure 4: Homologous trends with extrapolation
+#  Figure 4: Homologous trends (unchanged)
 # ============================================================
 def exp_decay(Z, a, b, c):
     return a - b * np.exp(-c * Z)
@@ -282,7 +286,6 @@ def plot_figure4():
         I_pred = 0.08 + 0.39 * (1 - (eta_pred - 0.73) / 0.26)
         r2 = 0.997
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
-    # Panel (a)
     ax1.plot(Z_fit, eta_fit, color=COLORS['blue'], ls='--', lw=1.5, label=r'$\eta$ fit (R²={:.3f})'.format(r2))
     ax1.scatter(Z, eta_vals, color=COLORS['blue'], s=80, zorder=5, label=r'$\eta$ computed', edgecolor='black', lw=0.8)
     ax1.scatter(Z_pred, eta_pred, color=COLORS['blue'], s=100, zorder=5, marker='*', label=r'$\eta$ predicted', edgecolor='black', lw=0.8)
@@ -303,7 +306,6 @@ def plot_figure4():
     lns1, labs1 = ax1.get_legend_handles_labels()
     lns2, labs2 = ax1b.get_legend_handles_labels()
     ax1.legend(lns1 + lns2, labs1 + labs2, loc='upper right', fontsize=8)
-    # Panel (b)
     ax2.plot(Z, VDE_X, color=COLORS['green'], marker='o', markersize=8, lw=2, label='VDE (eV)')
     for i, label in enumerate(labels):
         ax2.annotate(label, (Z[i], VDE_X[i]), textcoords="offset points", xytext=(0, 8), ha='center', fontsize=9)
@@ -330,15 +332,15 @@ def plot_figure4():
 # ============================================================
 def main():
     print("="*70)
-    print(" FIGURE GENERATION v4 (FINAL): CBi⁻ RELATIVISTIC BONDING STUDY")
+    print(" FIGURE GENERATION: CBi⁻ RELATIVISTIC BONDING STUDY")
     print("="*70)
     print("\nData sources:")
-    print("  - Experimental VDEs: Kahraman et al., Science 2026")
+    print("  - Experimental ADEs: Kahraman et al., Science 2026, Table 1")
     print("  - Theoretical VDEs: This work, EOM-IP-CCSD/DIRAC24")
     print("  - η and I: Computed from DIRAC24 wavefunctions")
     print("  - Orbital visualization: Real spherical harmonic volumes")
     print("\n" + "-"*70)
-    print("\n[1] Generating Figure 1...")
+    print("\n[1] Generating Figure 1 ...")
     plot_figure1()
     print("\n[2] Generating Figure 2...")
     plot_figure2()
@@ -350,10 +352,10 @@ def main():
     print(f"    → Prediction: CAt⁻ (Z=85): η={eta_pred[1]:.3f}, I={I_pred[1]:.3f} nats")
     print("\n" + "-"*70)
     print("Figure mapping to manuscript:")
-    print("  Figure_P0 → Manuscript Fig. 1 (Spectral comparison)")
-    print("  Figure_P1 → Manuscript Fig. 2 (Orbital mixing)")
-    print("  Figure_P2 → Manuscript Fig. 3 (Phase transition)")
-    print("  Figure_P3 → Manuscript Fig. 4 (Homologous trends)")
+    print("  Figure_P0 → Manuscript Fig. 1 (Spectral comparison) ")
+    print("  Figure_P1 → Manuscript Fig. 2 (Orbital mixing) ")
+    print("  Figure_P2 → Manuscript Fig. 3 (Phase transition) ")
+    print("  Figure_P3 → Manuscript Fig. 4 (Homologous trends) ")
     print("="*70)
 
 if __name__ == "__main__":
