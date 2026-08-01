@@ -5,7 +5,7 @@ This repository contains the official Python code for generating all main figure
 **Relativistic Bond Reconstruction in the CBi⁻ Molecular Ion: An Information Dynamics Perspective**  
 
 ## 🔗 Paper Link
-https://doi.org/10.5281/zenodo.21734952
+https://doi.org/10.5281/zenodo.21734951
 
 ---
 
@@ -54,6 +54,11 @@ python generate_figures_v2.2.py
 ```
 
 The script will automatically generate all PDF figures in the current working directory without any warnings.
+
+---
+## Citation
+
+Huang, K., Liu, H.& Huang, Z. (2026). Relativistic Bond Reconstruction in Chemical Bonding: An Information Dynamics Perspective on the CBi- Molecular Ion. Zenodo. https://doi.org/10.5281/zenodo.21734951
 
 ---
 
