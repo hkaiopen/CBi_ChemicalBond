@@ -31,7 +31,7 @@ The main findings are:
 
 ## 📂 Repository Contents
 
-- `generate_figures_v2.2.py` : The master script to generate all publication-ready figures.
+- `Figure_Generation_Script.py` : The master script to generate all publication-ready figures.
 - `Figure_P0_spectra_comparison.pdf` : Experimental vs. Theoretical photoelectron spectra.
 - `Figure_P1_orbital_mixing.pdf` : Visualization of σ/π orbital mixing.
 - `Figure_P2_phase_transition.pdf` : Continuous phase transition of bonding rules vs. λ.
@@ -50,7 +50,7 @@ pip install numpy scipy matplotlib
 Run the figure generation script:
 
 ```bash
-python generate_figures_v2.2.py
+python Figure_Generation_Script.py
 ```
 
 The script will automatically generate all PDF figures in the current working directory without any warnings.
