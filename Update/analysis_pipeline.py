@@ -86,7 +86,15 @@ def compute_eta(S, optimal_pairing=True):
     """
     Compute the mixing parameter eta.
 
-    eta = (1/N) * sum_i |<phi_i^SOC | phi_i^NR>|^2
+    eta = (1/N) * max_pi sum_i |<phi_i^SOC | phi_{pi(i)}^NR>|^2
+
+    The maximization is over all permutations pi of the NR orbitals,
+    solved via the Hungarian algorithm. This definition is essential
+    when orbital energy ordering is not aligned with physical pairing.
+
+    When optimal_pairing=False, only the diagonal (pi = identity) is
+    used, which may give physically meaningless results when orbital
+    orderings differ between the two basis sets.
     """
     overlap_sq = np.abs(S) ** 2
     if optimal_pairing:

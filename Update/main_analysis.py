@@ -1,9 +1,9 @@
 """
-Self-consistent S-matrix analysis for CBi- using verified experimental data.
+Self-consistent S-matrix analysis for CBi- using experimental data.
 
 This script implements the information dynamics framework (Section 2 of the
 manuscript) to compute self-consistent metrics from a unitary S-matrix, using
-verified experimental data from Kahraman et al. (Science 2026).
+experimental data from Kahraman et al. (Science 2026).
 
 Framework overview:
 - Real space R: set of observables, described by density matrix rho (Eq. 1)
@@ -24,7 +24,7 @@ Usage:
     python main_analysis.py
 
 Output files:
-    corrected_values.json  - all computed values
+    analysis_results.json  - all computed values
     S_matrix_CBi.csv       - full 3x3 unitary overlap matrix
 """
 
@@ -34,7 +34,7 @@ import json
 import os
 
 # ============================================================
-# Section 1: Verified experimental data from Science 2026
+# Section 1: Experimental data from Science 2026
 # ============================================================
 # Source: Kahraman et al., Science 2026, 393, 184-187, Table 1
 
@@ -91,16 +91,6 @@ class InformationDynamicsFramework:
     """
 
     def __init__(self, S_matrix, nr_labels=None, soc_labels=None):
-        """
-        Parameters
-        ----------
-        S_matrix : np.ndarray, shape (n_soc, n_nr)
-            Overlap matrix S_ij = <phi_i^SOC | phi_j^NR>
-        nr_labels : list of str
-            Non-relativistic orbital labels (symmetry labels)
-        soc_labels : list of str
-            Spin-orbit coupled orbital labels
-        """
         self.S = np.array(S_matrix, dtype=np.float64)
         self.nr_labels = nr_labels or [f"NR_{i}" for i in range(self.S.shape[1])]
         self.soc_labels = soc_labels or [f"SOC_{i}" for i in range(self.S.shape[0])]
@@ -116,12 +106,18 @@ class InformationDynamicsFramework:
 
     def compute_eta(self, optimal_pairing=True):
         """
-        Compute the mixing parameter eta (Eq. 8).
+        Compute the mixing parameter eta.
 
-        eta = (1/N) * sum_i |<phi_i^SOC | phi_i^NR>|^2
+        eta = (1/N) * max_pi sum_i |<phi_i^SOC | phi_{pi(i)}^NR>|^2
 
-        eta measures the extent to which the nonrelativistic orbital labels
-        survive the relativistic mixing.
+        The maximization is over all permutations pi of the NR orbitals,
+        solved via the Hungarian algorithm. This definition is essential
+        when orbital energy ordering is not aligned with physical pairing.
+
+        For CBi-, a diagonal-only definition (pi = identity) would pair the
+        |omega|=3/2 orbital with the sigma orbital (overlap squared = 0) and
+        yield eta = 0.194, which lacks physical meaning. The optimal
+        assignment gives eta = 0.722.
         """
         overlap_sq = np.abs(self.S) ** 2
         if optimal_pairing:
@@ -135,16 +131,7 @@ class InformationDynamicsFramework:
         return eta, row_ind, col_ind, paired_values
 
     def compute_mutual_information(self):
-        """
-        Compute the orbital mutual information I(omega; NR) (Eq. 6).
-
-        I = sum_{i,j} P(i,j) * ln[ P(i,j) / (P_omega(i) * P_NR(j)) ]
-
-        Limiting behavior:
-        - NR limit (S = identity): I = ln(N) (maximum)
-        - Complete mixing (S uniform): I = 0 (minimum)
-        - For N=3: I_max = ln(3) = 1.099 nats
-        """
+        """Compute the orbital mutual information I(omega; NR)."""
         N = self.S.shape[1]
         P = np.abs(self.S) ** 2 / N
         Pi = P.sum(axis=1)
@@ -158,16 +145,7 @@ class InformationDynamicsFramework:
         return I
 
     def compute_conditional_entropy(self):
-        """
-        Compute the average conditional entropy A = <H(sigma/pi | omega)>.
-
-        A measures label ambiguity - how much uncertainty remains in the
-        sigma/pi label after knowing the omega label.
-
-        Limiting behavior:
-        - NR limit: A = 0
-        - Complete mixing: A = ln(2) = 0.693 nats (maximum)
-        """
+        """Compute the average conditional entropy A = <H(sigma/pi | omega)>."""
         H_list = []
         for i in range(self.S.shape[0]):
             row = np.abs(self.S[i, :]) ** 2
@@ -230,14 +208,7 @@ class InformationDynamicsFramework:
 # ============================================================
 
 def build_S_matrix(theta):
-    """
-    Build the 3x3 unitary S-matrix from mixing angle theta.
-
-    Parameterization:
-    - |omega|=3/2  = |pi_2>  (pure pi, symmetry-forbidden mixing)
-    - |omega|=1/2,1 = cos(theta)|sigma> + sin(theta)|pi_1>
-    - |omega|=1/2,2 = -sin(theta)|sigma> + cos(theta)|pi_1>
-    """
+    """Build the 3x3 unitary S-matrix from mixing angle theta."""
     c, s = np.cos(theta), np.sin(theta)
     return np.array([
         [0.0, 0.0, 1.0],
@@ -260,12 +231,12 @@ def theta_from_sigma_fraction(sigma_frac):
 def main():
     print("=" * 70)
     print(" Self-consistent S-matrix analysis: CBi-")
-    print(" Information Dynamics Framework + Verified Experimental Data")
+    print(" Information Dynamics Framework + Experimental Data")
     print("=" * 70)
 
-    # 4.1 Verified experimental data
+    # 4.1 Experimental data
     print("\n" + "=" * 70)
-    print(" Verified Experimental Data (Science 2026, Table 1)")
+    print(" Experimental Data (Science 2026, Table 1)")
     print("=" * 70)
     print(f"\n Reference: {EXPERIMENTAL_DATA['reference']}")
     print(f" Method: {EXPERIMENTAL_DATA['method']}")
@@ -406,10 +377,10 @@ def main():
 
     # 4.9 Save outputs
     output_data = {
-        'description': ('Self-consistent values for the CBi- paper. '
-                        'Computed from a 3x3 unitary S-matrix within the '
+        'description': ('Computed values for the CBi- paper. '
+                        'Derived from a 3x3 unitary S-matrix within the '
                         'information dynamics framework.'),
-        'verified_experimental_data': EXPERIMENTAL_DATA,
+        'experimental_data': EXPERIMENTAL_DATA,
         'computational_details': OUR_COMPUTATIONAL_DETAILS,
         'CBi': {
             'theta_deg': float(np.degrees(theta_CBi)),
@@ -440,7 +411,7 @@ def main():
         output_dir = os.path.dirname(os.path.abspath(__file__))
     except NameError:
         output_dir = os.getcwd()
-    json_path = os.path.join(output_dir, 'corrected_values.json')
+    json_path = os.path.join(output_dir, 'analysis_results.json')
     csv_path = os.path.join(output_dir, 'S_matrix_CBi.csv')
 
     with open(json_path, 'w') as f:
