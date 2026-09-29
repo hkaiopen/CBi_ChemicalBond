@@ -2,11 +2,11 @@
 >>> (executing file "main_analysis.py")
 ======================================================================
  Self-consistent S-matrix analysis: CBi-
- Information Dynamics Framework + Verified Experimental Data
+ Information Dynamics Framework + Experimental Data
 ======================================================================
 
 ======================================================================
- Verified Experimental Data (Science 2026, Table 1)
+ Experimental Data (Science 2026, Table 1)
 ======================================================================
 
  Reference: Kahraman et al., Science 2026, 393, 184-187, Table 1
@@ -110,8 +110,6 @@
 ======================================================================
  Output files
 ======================================================================
-  \corrected_values.json
-  \S_matrix_CBi.csv
+  .\analysis_results.json
+  .\S_matrix_CBi.csv
 ======================================================================
-
->>> 
