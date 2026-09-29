@@ -1,10 +1,6 @@
 """
 Figure generation for the CBi- paper.
 
-Generates figures using the corrected data from the self-consistent
-analysis. Can be used to update the figures in the manuscript and
-supplementary information.
-
 Usage:
     python figure_generation.py
 
@@ -46,7 +42,7 @@ os.makedirs(FIGURES_DIR, exist_ok=True)
 
 def load_corrected_data():
     """Load corrected values from JSON file."""
-    json_path = os.path.join(OUTPUT_DIR, 'corrected_values.json')
+    json_path = os.path.join(OUTPUT_DIR, 'analysis_results.json')
     with open(json_path, 'r') as f:
         return json.load(f)
 
