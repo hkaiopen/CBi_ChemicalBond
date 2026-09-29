@@ -1,0 +1,265 @@
+
+>>> (executing file "numerical_validation.py")
+======================================================================
+ NUMERICAL VALIDATION EXPERIMENTS
+======================================================================
+======================================================================
+Experiment 1: Pairing Algorithm Comparison
+======================================================================
+Clean S-matrix eta: 0.7220
+
+With random unitary noise (5% rotation):
+  eta (energy ordering):  0.1425 +/- 0.0233
+  eta (optimal pairing):  0.7206 +/- 0.0383
+  |delta eta| max:        0.7776
+  |delta eta| mean:       0.5781
+
+======================================================================
+Experiment 2: Noise Injection - Spurious Sigma Character
+======================================================================
+Question: How does projection noise create non-zero sigma
+character in the |omega|=3/2 orbital (symmetry-forbidden)?
+
+Noise level  Sigma in |omega|=3/2 (%)     Unitarity dev. 
+----------------------------------------------------------
+0.0000       0.0000                       0.000000       
+0.0053       0.0037                       0.000000       
+0.0105       0.0004                       0.000000       
+0.0158       0.0292                       0.000000       
+0.0211       0.0000                       0.000000       
+0.0263       0.1527                       0.000000       
+0.0316       0.3060                       0.000000       
+0.0368       0.0865                       0.000000       
+0.0421       0.3806                       0.000000       
+0.0474       0.5591                       0.000000       
+0.0526       0.1524                       0.000000       
+0.0579       0.0746                       0.000000       
+0.0632       0.7451                       0.000000       
+0.0684       0.2075                       0.000000       
+0.0737       0.1622                       0.000000       
+0.0789       0.1498                       0.000000       
+0.0842       0.1331                       0.000000       
+0.0895       0.2876                       0.000000       
+0.0947       0.3367                       0.000000       
+0.1000       0.0025                       0.000000       
+
+Key finding:
+  At noise level ~1%: spurious sigma character is small.
+  Reproducing the manuscript's reported 3.8% would require
+  noise levels far exceeding typical DIRAC precision.
+
+======================================================================
+Experiment 3: Subspace Closure Test
+======================================================================
+Question: Can a 3x3 sub-block be made unitary by including
+virtual orbitals, or is the non-unitarity intrinsic?
+
+3x3 sub-block of random unitary:
+  Max deviation from unitarity: 0.953070
+  Is unitary: False
+
+  Leakage to virtual space: 2.017567
+  If leakage is small (<0.01), the 3x3 block is approximately unitary.
+
+Analytical S-matrix (exact unitary):
+  Max deviation: 0.00e+00
+  Is unitary: True
+
+======================================================================
+Experiment 4: CN- Null Test - Noise Floor for A
+======================================================================
+Question: Is A(CN-) = 0.08 nats plausibly a noise floor,
+or does it indicate a deeper problem?
+
+Noise model               Mean A       Max A        P(A > 0.08)    
+-----------------------------------------------------------------
+Gaussian (1e-3)           0.000018     0.000098     0.0000         
+Gaussian (1e-2)           0.001243     0.006404     0.0000         
+Gaussian (0.05)           0.020264     0.092409     0.0003         
+Gaussian (0.1)            0.061744     0.232245     0.2662         
+Orthogonal noise (1%)     0.002301     0.017726     0.0000         
+Orthogonal noise (5%)     0.035606     0.196862     0.0815         
+
+Analysis:
+  The manuscript reports A(CN-) = 0.08 nats.
+  The analytical model predicts A(CN-) ~ 1e-3 to 1e-4 nats.
+  Reproducing 0.08 from noise requires projection noise levels
+  of 5-10%, far exceeding typical DIRAC precision (< 1e-6).
+  Conclusion: A(CN-) = 0.08 is NOT plausibly a noise floor.
+
+======================================================================
+Experiment 5: Basis Set Incompleteness Model
+======================================================================
+Basis set                 Noise level  Sigma in |w|=3/2 (%)   eta        A (nats)  
+----------------------------------------------------------------------------------
+Minimal (dz)              0.0500       0.25                   0.7186     0.4550    
+Double-zeta               0.0200       0.04                   0.7211     0.4536    
+Triple-zeta               0.0050       0.00                   0.7221     0.4529    
+Quadruple-zeta            0.0010       0.00                   0.7220     0.4529    
+Complete basis limit      0.0000       0.00                   0.7220     0.4529    
+
+Key insight:
+  At triple-zeta quality, spurious sigma character should be
+  < 0.01%. The manuscript's reported 3.8% is too large to be
+  from basis set incompleteness alone.
+
+======================================================================
+ SUMMARY OF FINDINGS
+======================================================================
+
+1. PAIRING ALGORITHM: Optimal (Hungarian) pairing is robust against
+   small perturbations. Energy ordering can differ significantly when
+   orbitals are nearly degenerate. Always use optimal pairing for eta.
+
+2. SPURIOUS SIGMA CHARACTER: Projection noise at the 1-2% level creates
+   only small spurious sigma character in the |omega|=3/2 orbital. The
+   reported 3.8% cannot be explained by typical numerical noise.
+
+3. SUBSPACE CLOSURE: A 3x3 sub-block of a unitary matrix is unitary only
+   if the subspace is closed (no leakage to virtual orbitals). If the
+   bonding subspace mixes with lone pairs or sigma* orbitals, the 3x3
+   block will not be unitary.
+
+4. CN- NOISE FLOOR: A(CN-) = 0.08 nats is not a plausible noise floor.
+   It requires 5-10% projection noise, far exceeding typical DIRAC
+   precision. This indicates systematic rather than random errors.
+
+5. BASIS SET INCOMPLETENESS: At triple-zeta quality, basis set noise
+   should be < 0.01%. The reported 3.8% sigma contamination is too large
+   to be from basis set incompleteness alone.
+
+
+>>> (executing file "numerical_validation.py")
+======================================================================
+ NUMERICAL VALIDATION EXPERIMENTS
+======================================================================
+======================================================================
+Experiment 1: Pairing Algorithm Comparison
+======================================================================
+Clean S-matrix eta: 0.7220
+
+With random unitary noise (5% rotation):
+  eta (energy ordering):  0.1425 +/- 0.0233
+  eta (optimal pairing):  0.7206 +/- 0.0383
+  |delta eta| max:        0.7776
+  |delta eta| mean:       0.5781
+
+======================================================================
+Experiment 2: Noise Injection - Spurious Sigma Character
+======================================================================
+Question: How does projection noise create non-zero sigma
+character in the |omega|=3/2 orbital (symmetry-forbidden)?
+
+Noise level  Sigma in |omega|=3/2 (%)     Unitarity dev. 
+----------------------------------------------------------
+0.0000       0.0000                       0.000000       
+0.0053       0.0037                       0.000000       
+0.0105       0.0004                       0.000000       
+0.0158       0.0292                       0.000000       
+0.0211       0.0000                       0.000000       
+0.0263       0.1527                       0.000000       
+0.0316       0.3060                       0.000000       
+0.0368       0.0865                       0.000000       
+0.0421       0.3806                       0.000000       
+0.0474       0.5591                       0.000000       
+0.0526       0.1524                       0.000000       
+0.0579       0.0746                       0.000000       
+0.0632       0.7451                       0.000000       
+0.0684       0.2075                       0.000000       
+0.0737       0.1622                       0.000000       
+0.0789       0.1498                       0.000000       
+0.0842       0.1331                       0.000000       
+0.0895       0.2876                       0.000000       
+0.0947       0.3367                       0.000000       
+0.1000       0.0025                       0.000000       
+
+Key finding:
+  At noise level ~1%: spurious sigma character is small.
+  A spurious sigma character of 3.8% would require noise levels
+  far exceeding typical DIRAC precision (< 1e-6).
+
+======================================================================
+Experiment 3: Subspace Closure Test
+======================================================================
+Question: Can a 3x3 sub-block be made unitary by including
+virtual orbitals, or is the non-unitarity intrinsic?
+
+3x3 sub-block of random unitary:
+  Max deviation from unitarity: 0.953070
+  Is unitary: False
+
+  Leakage to virtual space: 2.017567
+  If leakage is small (< 0.01), the 3x3 block is approximately
+  unitary. If leakage is large, the subspace is not closed.
+
+Analytical S-matrix (exact unitary):
+  Max deviation: 0.00e+00
+  Is unitary: True
+
+======================================================================
+Experiment 4: Null Test - Noise Floor for A
+======================================================================
+Question: What is the numerical noise floor for A in the
+non-relativistic limit (no mixing)?
+
+Noise model               Mean A       Max A        P(A > 0.08)    
+-----------------------------------------------------------------
+Gaussian (1e-3)           0.000018     0.000098     0.0000         
+Gaussian (1e-2)           0.001243     0.006404     0.0000         
+Gaussian (0.05)           0.020264     0.092409     0.0003         
+Gaussian (0.1)            0.061744     0.232245     0.2662         
+Orthogonal noise (1%)     0.002301     0.017726     0.0000         
+Orthogonal noise (5%)     0.035606     0.196862     0.0815         
+
+Analysis:
+  The analytical model predicts A ~ 1e-3 to 1e-4 nats for
+  weak spin-orbit coupling (theta ~ 2 deg).
+  A label ambiguity A = 0.08 nats would require projection
+  noise levels of 5-10%, far exceeding typical DIRAC precision
+  (< 1e-6). Such a value would indicate systematic rather than
+  random errors in the projection.
+
+======================================================================
+Experiment 5: Basis Set Incompleteness Model
+======================================================================
+Basis set                 Noise level  Sigma in |w|=3/2 (%)   eta        A (nats)  
+----------------------------------------------------------------------------------
+Minimal (dz)              0.0500       0.25                   0.7186     0.4550    
+Double-zeta               0.0200       0.04                   0.7211     0.4536    
+Triple-zeta               0.0050       0.00                   0.7221     0.4529    
+Quadruple-zeta            0.0010       0.00                   0.7220     0.4529    
+Complete basis limit      0.0000       0.00                   0.7220     0.4529    
+
+Key insight:
+  At triple-zeta quality, spurious sigma character should be
+  < 0.01%. A spurious sigma character of 3.8% would be too
+  large to attribute to basis set incompleteness alone.
+
+======================================================================
+ SUMMARY OF FINDINGS
+======================================================================
+
+1. PAIRING ALGORITHM: Optimal (Hungarian) pairing is robust against
+   small perturbations. Energy ordering can differ significantly when
+   orbitals are nearly degenerate. Always use optimal pairing for eta.
+
+2. SPURIOUS SIGMA CHARACTER: Projection noise at the 1-2% level creates
+   only small spurious sigma character in the |omega|=3/2 orbital.
+   A spurious sigma character of 3.8% cannot be explained by typical
+   numerical noise.
+
+3. SUBSPACE CLOSURE: A 3x3 sub-block of a unitary matrix is unitary
+   only if the subspace is closed (no leakage to virtual orbitals).
+   If the bonding subspace mixes with lone pairs or sigma* orbitals,
+   the 3x3 block will not be unitary.
+
+4. NOISE FLOOR: A label ambiguity A = 0.08 nats would require 5-10%
+   projection noise, far exceeding typical DIRAC precision. Such a
+   value would indicate systematic rather than random errors.
+
+5. BASIS SET INCOMPLETENESS: At triple-zeta quality, basis set noise
+   should be < 0.01%. A spurious sigma character of 3.8% is too large
+   to be from basis set incompleteness alone.
+
+
+>>> 
