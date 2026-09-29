@@ -1,0 +1,12 @@
+
+>>> (executing file "analysis_pipeline.py")
+Running self-test...
+theta = 40.22 deg
+eta = 0.7220 (expected 0.722)
+I = 0.6457 nats (expected 0.646)
+A = 0.4529 nats (expected 0.453)
+Unitary: True
+Sigma fractions: ['0.0%', '58.3%', '41.7%']
+Self-test passed.
+
+>>> 
