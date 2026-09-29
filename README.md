@@ -1,68 +1,144 @@
 # Information Dynamics of Relativistic Bond Reconstruction in CBi⁻
 
-This repository contains the official Python code for generating all main figures presented in the manuscript:
+This repository contains the Python code and data for the manuscript:
 
-**Relativistic Bond Reconstruction in the CBi⁻ Molecular Ion: An Information Dynamics Perspective**  
+**Relativistic Bond Reconstruction in the CBi⁻ Molecular Ion: An Information Dynamics Perspective**
 
-## 🔗 Paper Link
+## Paper Link
+
 https://doi.org/10.5281/zenodo.21734951
 
 ---
 
-## 📝 Key Conclusions
+## Key Conclusions
 
-This work reinterprets the breakthrough *Science* 2026 experiment on CBi⁻ through the lens of Information Dynamics. By combining high-level relativistic quantum chemistry (Dirac-Coulomb CCSD(T)) with information-theoretic measures, we demonstrate that chemical bonding rules are not absolute but undergo physical restructuring under extreme conditions.
+This work reinterprets the breakthrough Science 2026 experiment on CBi⁻ through the lens of Information Dynamics. By combining high-level relativistic quantum chemistry (Dirac-Coulomb CCSD(T)) with information-theoretic measures, we demonstrate that chemical bonding rules are not absolute but undergo physical restructuring under extreme conditions.
 
 The main findings are:
 
-1. **Quantification of Orbital Mixing**  
-   We quantitatively characterize the "smearing" of the classical σ/π boundary. The mixing parameter drops from η = 0.99 (in non-relativistic CN⁻) to η = 0.73 (in relativistic CBi⁻), while the orbital mutual information increases sixfold (I = 0.47 nats), providing a rigorous measure of the loss of symmetry distinction.
+1. **Quantification of Orbital Mixing**
 
-2. **Perfect Experimental Reproduction**  
-   The simulated photoelectron spectra (EOM-IP-CCSD) reproduce the experimental X, A, and B bands with an RMS deviation of only 0.035 eV, including the vibrational progression (FC factors 1.00 : 0.32 : 0.08).
+   We quantitatively characterize the smearing of the classical sigma/pi boundary. The mixing parameter drops from eta ~ 0.99 (in non-relativistic CN⁻) to eta = 0.722 (in relativistic CBi⁻), while the orbital mutual information decreases from I ~ 1.099 nats (NR limit) to I = 0.646 nats. The label ambiguity (conditional entropy) A = 0.453 nats quantifies the loss of sigma/pi predictivity.
 
-3. **Continuous Phase Transition in Bonding Rules**  
-   The "restructuring" of the virtual space (from the C∞v group to the double group C∞v*) occurs as a continuous phase transition driven by spin-orbit coupling (SOC), with a steep transition occurring around λ ≈ 0.55.
+2. **Self-Consistent S-Matrix Framework**
 
-4. **Predictive Power**  
-   The framework extrapolates the homologous series (C–N to C–Bi), successfully predicting the bonding parameters for as-yet unsynthesized species: CPb⁻ (η ≈ 0.729) and CAt⁻ (η ≈ 0.724).
+   A single-parameter constraint model enforces unitarity and symmetry orthogonality: given sigma_1 = 58.3%, unitarity forces sigma_2 = 41.7% (complementary), and angular momentum projection orthogonality forces sigma_3 = 0.00% (strictly, by symmetry). All derived metrics (eta, I, A) are uniquely determined from this single input.
 
----
+3. **Continuous Phase Transition in Bonding Rules**
 
-## 📂 Repository Contents
+   The restructuring of the virtual space (from the C-infinity-v group to the double group C-infinity-v*) occurs as a continuous crossover driven by spin-orbit coupling (SOC), with the steepest change occurring around lambda ~ 0.55.
 
-- `Figure_Generation_Script.py` : The master script to generate all publication-ready figures.
-- `Figure_P0_spectra_comparison.pdf` : Experimental vs. Theoretical photoelectron spectra.
-- `Figure_P1_orbital_mixing.pdf` : Visualization of σ/π orbital mixing.
-- `Figure_P2_phase_transition.pdf` : Continuous phase transition of bonding rules vs. λ.
-- `Figure_P3_homologous_trends.pdf` : Periodic trends and extrapolated predictions.
+4. **Predictive Power**
+
+   The framework extrapolates the homologous series (C-N to C-Bi), predicting eta = 0.722 for CBi⁻ consistent with the experimental assignment.
 
 ---
 
-## 🚀 How to Run
+## Repository Contents
+
+### Root Level
+
+| File | Description |
+|------|-------------|
+| README.md | This file |
+| Figure_Generation_Script.py | Original figure generation script (legacy, uses hardcoded values) |
+| Figure_P0_spectra_comparison.pdf | Experimental vs. Theoretical photoelectron spectra |
+| Figure_P1_orbital_mixing.pdf | Visualization of sigma/pi orbital mixing |
+| Figure_P2_phase_transition.pdf | Continuous phase transition of bonding rules vs. lambda |
+| Figure_P3_homologous_trends.pdf | Periodic trends and extrapolated predictions |
+
+### Update/ Directory (Self-Consistent Analysis Pipeline)
+
+| File | Description |
+|------|-------------|
+| main_analysis.py | Main analysis script: implements the Information Dynamics Framework, computes eta, I, A from the S-matrix, performs lambda-scan and homologous series analysis |
+| analysis_pipeline.py | Core pipeline module: symmetry-adapted basis construction, overlap matrix computation, S-matrix metrics, unitarity diagnostics |
+| figure_generation.py | Updated figure generation using corrected data from JSON (generates 5 figures as PNG) |
+| numerical_validation.py | 5 numerical experiments: pairing comparison, noise injection, subspace closure, CN⁻ null test, basis set incompleteness model |
+| analysis_results.json | All computed values: S-matrix, eta, I, A, lambda-scan data, homologous series data, limits |
+| S_matrix_CBi.csv | Full 3x3 unitary overlap matrix (rows: |omega|=3/2, |omega|=1/2(1), |omega|=1/2(2); cols: sigma, pi_1, pi_2) |
+| figures/ | Directory for generated figure outputs |
+
+---
+
+## How to Run
+
+### Prerequisites
 
 Ensure you have the required Python libraries installed:
 
-```bash
 pip install numpy scipy matplotlib
-```
 
-Run the figure generation script:
+### Running the Self-Consistent Analysis (Recommended)
 
-```bash
-python Figure_Generation_Script.py
-```
+    cd Update/
+    python main_analysis.py
 
-The script will automatically generate all PDF figures in the current working directory without any warnings.
+This will:
+- Load experimental data from Science 2026
+- Build the self-consistent 3x3 unitary S-matrix
+- Compute eta, I, A metrics
+- Perform lambda-scan and homologous series analysis
+- Save results to analysis_results.json and S_matrix_CBi.csv
+
+### Generating Figures (Updated Pipeline)
+
+    cd Update/
+    python figure_generation.py
+
+This generates 5 figures as PNG in the figures/ directory:
+- Figure1_orbital_mixing.png - Orbital mixing visualization
+- Figure2_spectrum_overlay.png - Experimental vs. Theory spectrum
+- Figure3_lambda_scan.png - lambda-driven restructuring
+- Figure4_homologous_trends.png - Homologous series trends
+- Figure5_metric_clarification.png - I vs. A metric clarification
+
+### Running Numerical Validation
+
+    cd Update/
+    python numerical_validation.py
+
+This runs 5 experiments characterizing the robustness of the pipeline.
+
+### Legacy Script (Root Level)
+
+    python Figure_Generation_Script.py
+
+Note: This legacy script uses hardcoded values from the original analysis. For corrected values, use the Update/figure_generation.py pipeline instead.
 
 ---
+
+## Corrected Values Summary
+
+| Quantity | CN⁻ (NR limit) | CBi⁻ (Relativistic) | Upper Bound |
+|----------|---------------|---------------------|-------------|
+| eta (mixing parameter) | 0.999 | 0.722 | 1.0 |
+| I(omega; NR) (mutual information) | 1.092 | 0.646 nats | ln(3) ~ 1.099 nats |
+| A = <H(sigma/pi|omega)> (label ambiguity) | 0.006 | 0.453 nats | ln(2) ~ 0.693 nats |
+
+| Orbital | sigma character | pi character |
+|---------|------------|-------------|
+| |omega|=3/2 | 0.00% (symmetry forced) | 100.0% |
+| |omega|=1/2 (1) | 58.3% | 41.7% |
+| |omega|=1/2 (2) | 41.7% | 58.3% |
+
+---
+
+## Notes on Data Consistency
+
+- The sigma fractions sum to exactly 100% (58.3% + 41.7% + 0.00% = 100.0%), satisfying unitarity.
+- The |omega|=3/2 orbital has exactly zero sigma character, enforced by angular momentum projection orthogonality in the C-infinity-v* double group.
+- The mutual information I and conditional entropy A are distinct quantities: I measures total label predictivity loss (upper bound ln 3), while A measures the average sigma/pi label ambiguity per SOC orbital (upper bound ln 2). The manuscript previously reported A under the label I; both are now reported explicitly.
+- The CN⁻ conditional entropy A = 0.006 nats is consistent with the weak-SOC limit (theta = 2 degrees), not the strict NR limit (theta = 0 degrees) where A -> 0.
+
+---
+
 ## Citation
 
-Huang, K., Liu, H.& Huang, Z. (2026). Relativistic Bond Reconstruction in Chemical Bonding: An Information Dynamics Perspective on the CBi- Molecular Ion. Zenodo. https://doi.org/10.5281/zenodo.21734951
+Huang, K., Liu, H. & Huang, Z. (2026). Relativistic Bond Reconstruction in Chemical Bonding: An Information Dynamics Perspective on the CBi⁻ Molecular Ion. Zenodo. https://doi.org/10.5281/zenodo.21734951
 
 ---
 
-## ⚖️ License
+## License
 
 This code is provided for academic reproducibility purposes. Please contact the authors for permissions.
-```
