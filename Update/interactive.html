@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>When Chemistry's Rules Break — An Interactive Guide to Relativistic Bond Reconstruction in CBi⁻</title>
+<meta name="description" content="An interactive, jargon-light explainer of 'Relativistic Bond Reconstruction in Chemical Bonding: An Information Dynamics Perspective on the CBi- Molecular Ion' — for busy scientists and non-chemists.">
+<style>
+:root{
+  --ink:#1b2432; --muted:#5b6b7f; --bg:#f7f9fb; --card:#ffffff;
+  --blue:#2f6fbd; --blue-d:#20568f; --green:#3f9e57; --red:#d64545;
+  --amber:#c07f1a; --line:#e3e9f0; --code:#eef3f8;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  color:var(--ink);background:var(--bg);line-height:1.65;font-size:17px}
+a{color:var(--blue)}
+.wrap{max-width:980px;margin:0 auto;padding:0 22px}
+/* nav */
+nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;gap:18px;padding-top:10px;padding-bottom:10px}
+nav .brand{font-weight:700;font-size:15px;color:var(--ink);text-decoration:none}
+nav .links{margin-left:auto;display:flex;gap:16px;font-size:14px}
+nav .links a{text-decoration:none;color:var(--muted)}
+nav .links a:hover{color:var(--blue)}
+/* hero */
+.hero{background:linear-gradient(135deg,#12233d 0%,#1d3a63 60%,#24507e 100%);color:#fff;
+  padding:72px 0 64px;position:relative;overflow:hidden}
+.hero h1{font-size:clamp(30px,5vw,46px);line-height:1.15;margin:0 0 16px;letter-spacing:-.5px}
+.hero h1 .hl{color:#8fc1ff}
+.hero p.lead{font-size:19px;color:#c9d8ea;max-width:720px;margin:0 0 28px}
+.stats{display:flex;flex-wrap:wrap;gap:14px;margin:26px 0}
+.stat{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:12px;
+  padding:14px 18px;min-width:150px}
+.stat .v{font-size:26px;font-weight:800;color:#fff}
+.stat .v small{font-size:14px;font-weight:600;color:#9fc0e4}
+.stat .k{font-size:13px;color:#9fc0e4;margin-top:2px}
+.cta-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px}
+.btn{display:inline-block;padding:12px 22px;border-radius:10px;font-weight:700;font-size:16px;
+  text-decoration:none;transition:transform .12s ease, box-shadow .12s ease}
+.btn.primary{background:#fff;color:#173a63}
+.btn.ghost{border:1.5px solid rgba(255,255,255,.5);color:#fff}
+.btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.25)}
+.hero .meta{margin-top:26px;font-size:13.5px;color:#8ea6c2}
+/* sections */
+section{padding:56px 0}
+section h2{font-size:30px;margin:0 0 8px;letter-spacing:-.4px}
+section .sub{color:var(--muted);font-size:18px;margin:0 0 28px;max-width:760px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:26px 28px;
+  margin:18px 0;box-shadow:0 2px 10px rgba(20,40,70,.05)}
+.card h3{margin:0 0 10px;font-size:20px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.kicker{display:inline-block;font-size:13px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--blue);margin-bottom:6px}
+/* tooltip glossary */
+.term{border-bottom:2px dotted var(--blue);cursor:help;position:relative;white-space:nowrap}
+.term .tip{display:none;position:absolute;left:0;bottom:130%;width:260px;white-space:normal;
+  background:#12233d;color:#eaf1fa;font-size:14px;line-height:1.5;padding:12px 14px;border-radius:10px;
+  box-shadow:0 10px 26px rgba(0,0,0,.3);z-index:20}
+.term:hover .tip,.term:focus .tip{display:block}
+/* interactive lab */
+.lab{background:#0f1f36;color:#e8eef7;border-radius:16px;padding:30px 30px 26px;margin:22px 0;
+  box-shadow:0 12px 32px rgba(10,25,50,.35)}
+.lab h3{margin:0 0 4px;color:#fff}
+.lab p.hint{color:#9db4d0;font-size:15px;margin:0 0 18px}
+.lab input[type=range]{width:100%;accent-color:#6aa7ff;height:28px;cursor:pointer}
+.lab .readout{display:flex;flex-wrap:wrap;gap:12px;margin:16px 0}
+.lab .ro{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);border-radius:10px;
+  padding:10px 16px;min-width:130px}
+.lab .ro .v{font-size:22px;font-weight:800}
+.lab .ro .k{font-size:12.5px;color:#9db4d0}
+svg.chart{width:100%;height:auto;display:block;background:rgba(255,255,255,.04);
+  border-radius:10px;margin-top:10px}
+.orbitals{display:flex;gap:18px;margin-top:18px;flex-wrap:wrap}
+.orb{flex:1;min-width:150px;text-align:center}
+.orb .name{font-size:14px;color:#c6d6ea;margin-bottom:8px;font-weight:600}
+.bar{height:170px;width:64px;margin:0 auto;background:rgba(255,255,255,.08);border-radius:8px;
+  position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.15)}
+.bar .seg{position:absolute;left:0;right:0;transition:height .25s ease}
+.bar .seg.s{background:linear-gradient(180deg,#6aa7ff,#2f6fbd)}
+.bar .seg.p{background:linear-gradient(180deg,#7ed491,#3f9e57)}
+.bar-label{font-size:12.5px;color:#9db4d0;margin-top:8px;line-height:1.5}
+.legend{display:flex;gap:18px;font-size:14px;color:#c6d6ea;margin-top:12px;flex-wrap:wrap}
+.legend .sw{display:inline-block;width:14px;height:14px;border-radius:4px;margin-right:6px;vertical-align:-1px}
+/* validation cards */
+.val{border-left:4px solid var(--blue)}
+.val summary{cursor:pointer;font-weight:700;font-size:17px;list-style:none;display:flex;align-items:center;gap:10px}
+.val summary::-webkit-details-marker{display:none}
+.val summary .n{background:var(--blue);color:#fff;font-size:13px;font-weight:800;border-radius:8px;
+  padding:3px 10px;flex:none}
+.val summary .chev{margin-left:auto;color:var(--muted);transition:transform .2s}
+.val[open] summary .chev{transform:rotate(90deg)}
+.val .body{margin-top:12px;color:#33415a;font-size:16px}
+.val .verdict{display:inline-block;margin-top:10px;background:#e7f4ea;color:#20663a;font-weight:700;
+  font-size:14px;padding:6px 12px;border-radius:8px}
+/* figure */
+figure{margin:26px 0}
+figure img{width:100%;border-radius:12px;border:1px solid var(--line);background:#fff}
+figcaption{font-size:14.5px;color:var(--muted);margin-top:10px;line-height:1.6}
+/* analogy */
+.analogy{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line);border-radius:14px;
+  overflow:hidden;margin:20px 0}
+.analogy>div{padding:24px 26px}
+.analogy .a1{background:#eaf1fa}
+.analogy .a2{background:#fff}
+.analogy h4{margin:0 0 8px;font-size:17px}
+@media(max-width:640px){.analogy{grid-template-columns:1fr}}
+/* footer */
+footer{background:#0f1f36;color:#9db4d0;padding:44px 0;font-size:14.5px}
+footer a{color:#8fc1ff}
+footer .wrap{display:flex;flex-wrap:wrap;gap:26px;justify-content:space-between}
+.toc{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 26px;margin:0 0 8px}
+.toc ol{margin:8px 0 0;padding-left:22px;color:var(--muted)}
+.toc a{color:var(--ink);text-decoration:none}
+.toc a:hover{color:var(--blue)}
+.num{font-variant-numeric:tabular-nums}
+@media(max-width:640px){section{padding:40px 0}.lab{padding:22px 18px}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a class="brand" href="#top">CBi⁻ · Interactive Explainer</a>
+    <div class="links">
+      <a href="#thirty">30 seconds</a>
+      <a href="#lab1">Try it</a>
+      <a href="#framework">Framework</a>
+      <a href="#validation">Validation</a>
+      <a href="#deeper">Go deeper</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <h1>When chemistry's <span class="hl">rules</span> break,<br>we can now measure <span class="hl">exactly how</span>.</h1>
+    <p class="lead">In July 2026, physicists watched the textbook triple bond fall apart inside a molecule containing bismuth — the heaviest stable element you can put in a bond. This page explains what happened, why it matters, and how a new "information dynamics" framework turns the breakdown into hard numbers. No chemistry degree required.</p>
+    <div class="stats">
+      <div class="stat"><div class="v num">0.722</div><div class="k">mixing parameter η — how much of the old labels survive</div></div>
+      <div class="stat"><div class="v num">0.453 <small>nats</small></div><div class="k">label ambiguity A — how blurred σ/π has become</div></div>
+      <div class="stat"><div class="v num">58.3<small>%</small> / 41.7<small>%</small> / 0<small>%</small></div><div class="k">σ character of the three relativistic orbitals — from one input</div></div>
+      <div class="stat"><div class="v num">5</div><div class="k">numerical stress-tests confirming the numbers are real</div></div>
+    </div>
+    <div class="cta-row">
+      <a class="btn primary" href="#thirty">Give me the 30-second version</a>
+      <a class="btn ghost" href="#lab1">Let me play with the data ↓</a>
+    </div>
+    <div class="meta">Companion to: Huang et al., <em>Relativistic Bond Reconstruction in Chemical Bonding: An Information Dynamics Perspective on the CBi⁻ Molecular Ion</em> · Paper: <a href="https://doi.org/10.5281/zenodo.21734951" style="color:#8fc1ff">doi.org/10.5281/zenodo.21734951</a> · Code: <a href="https://github.com/hkaiopen/CBi_ChemicalBond" style="color:#8fc1ff">github.com/hkaiopen/CBi_ChemicalBond</a></div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="toc" style="margin-top:28px">
+    <strong>On this page</strong>
+    <ol>
+      <li><a href="#thirty">The 30-second version</a></li>
+      <li><a href="#discovery">What was discovered (the experiment)</a></li>
+      <li><a href="#lab1">Interactive: turn up relativity and watch the rules dissolve</a></li>
+      <li><a href="#framework">The new language: "real space" vs "virtual space"</a></li>
+      <li><a href="#lab2">Interactive: one number determines everything</a></li>
+      <li><a href="#validation">How we know the numbers are trustworthy</a></li>
+      <li><a href="#family">The family portrait: from CN⁻ to CBi⁻</a></li>
+      <li><a href="#why">Why should you care?</a></li>
+      <li><a href="#deeper">Go deeper: paper, code, data</a></li>
+    </ol>
+  </div>
+</div>
+
+<section id="thirty">
+  <div class="wrap">
+    <span class="kicker">Start here</span>
+    <h2>The 30-second version</h2>
+    <p class="sub">Three sentences. If you read nothing else, read these.</p>
+    <div class="grid3">
+      <div class="card"><h3>🧪 1. The observation</h3><p>In July 2026, a Brown University team used ultra-precise laser spectroscopy on the <span class="term">CBi⁻ ion<span class="tip">A molecule made of one carbon and one bismuth atom, carrying one extra electron. It's the heavy cousin of the familiar cyanide ion, CN⁻.</span></span> and saw something never seen before: bismuth's enormous <span class="term">spin–orbit coupling<span class="tip">A relativistic effect where an electron's spin and its orbital motion become entangled. It grows steeply with atomic number — bismuth (Z=83) has one of the strongest.</span></span> smeared the textbook boundary between σ and π bonds.</p></div>
+      <div class="card"><h3>📐 2. The framework</h3><p>Instead of arguing about orbitals, the paper treats <strong>bonding rules themselves</strong> as objects that can reorganize. "Virtual space" = the rulebook (symmetry labels); "real space" = the actual electrons. Relativity rewrites the rulebook from σ/π labels to total-angular-momentum (ω) labels.</p></div>
+      <div class="card"><h3>🔢 3. The numbers</h3><p>One measured number (58.3% σ character) <strong>forces</strong> everything else: the partner orbital must be 41.7%, the third exactly 0%, giving η&nbsp;=&nbsp;0.722, A&nbsp;=&nbsp;0.453&nbsp;nats, I&nbsp;=&nbsp;0.646&nbsp;nats. Five numerical stress-tests confirm these aren't artifacts.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="discovery" style="background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+  <div class="wrap">
+    <span class="kicker">The experiment</span>
+    <h2>What was discovered</h2>
+    <p class="sub">The story in plain language.</p>
+    <div class="card">
+      <p>For nearly a century, chemistry students learned that a triple bond = <strong>one σ bond + two π bonds</strong>. The σ bond is head-on overlap; the π bonds are side-on. Clean, separate, textbook.</p>
+      <p>That picture quietly assumes something: that an electron's <em>spin</em> and its <em>orbital motion</em> are independent. For light atoms that's an excellent approximation. For <strong>bismuth</strong> — element 83, where inner electrons whip around at a large fraction of light speed — it fails spectacularly.</p>
+      <p>In July 2026, Lai-Sheng Wang's group at Brown (with Kirk Peterson, <em>Science</em> 2026) aimed high-resolution cryogenic <span class="term">photoelectron spectroscopy<span class="tip">Knocking electrons out of a molecule with laser light and measuring their energies — like reading a molecule's fingerprint.</span></span> at CBi⁻, the heavy cousin of cyanide. They found the σ/π boundary <strong>dissolved</strong>: the three bonds reorganized into states labeled only by total angular momentum projection ω — two mixed |ω| = 1/2 pairs and one pure |ω| = 3/2 pair.</p>
+      <p>The experiment proved <em>that</em> it happens. The question left open: <strong>can we measure <em>how much</em> — with numbers, not adjectives?</strong> That's what this paper does.</p>
+    </div>
+    <figure>
+      <img src="figures/Figure2_spectrum_overlay.png" alt="Experimental vs simulated photoelectron spectrum of CBi-">
+      <figcaption><strong>Figure 2 (from the paper).</strong> The experimental fingerprint (top-left): three bands X, A, B. Theory reproduces the three-band structure; panel (e) aligns the X bands to compare relative positions. The mismatch that remains in band B is itself informative — it's exquisitely sensitive to the mixing.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="lab1">
+  <div class="wrap">
+    <span class="kicker">Interactive · no background needed</span>
+    <h2>Turn up relativity. Watch the rules dissolve.</h2>
+    <p class="sub">Drag the slider. λ = 0 is the everyday nonrelativistic world; λ = 1 is full bismuth-strength relativity. Everything below is computed live from the paper's self-consistent model.</p>
+    <div class="lab">
+      <h3>🔬 The relativity dial</h3>
+      <p class="hint">Spin–orbit coupling strength λ &nbsp;·&nbsp; <span id="lamVal" class="num">1.00</span> (0 = off, 1 = full CBi⁻)</p>
+      <input type="range" id="lamSlider" min="0" max="100" value="100" aria-label="Spin-orbit coupling strength">
+      <div class="readout">
+        <div class="ro"><div class="v num" id="roEta" style="color:#8fc1ff">0.722</div><div class="k">η — fraction of old labels surviving</div></div>
+        <div class="ro"><div class="v num" id="roI" style="color:#ff9d9d">0.646</div><div class="k">I — mutual information (nats)</div></div>
+        <div class="ro"><div class="v num" id="roA" style="color:#9fe0ae">0.453</div><div class="k">A — label ambiguity (nats)</div></div>
+        <div class="ro"><div class="v num" id="roTh" style="color:#ffd98a">40.2°</div><div class="k">mixing angle θ</div></div>
+      </div>
+      <svg class="chart" id="lamChart" viewBox="0 0 900 300" role="img" aria-label="Metrics versus lambda"></svg>
+      <div class="legend"><span><span class="sw" style="background:#6aa7ff"></span>η (label survival)</span><span><span class="sw" style="background:#ff7b7b"></span>I (mutual information)</span><span><span class="sw" style="background:#7ed491"></span>A (label ambiguity)</span></div>
+      <h3 style="margin-top:26px">What the three orbitals look like</h3>
+      <p class="hint">σ character (blue) vs π character (green) in each relativistic orbital, at your λ.</p>
+      <div class="orbitals">
+        <div class="orb"><div class="name">|ω| = 3/2</div><div class="bar"><div class="seg p" id="b0p" style="bottom:0;height:100%"></div><div class="seg s" id="b0s" style="bottom:0;height:0%"></div></div><div class="bar-label" id="l0">σ 0.0% · π 100%</div></div>
+        <div class="orb"><div class="name">|ω| = 1/2 ①</div><div class="bar"><div class="seg p" id="b1p" style="bottom:0;height:41.7%"></div><div class="seg s" id="b1s" style="bottom:41.7%;height:58.3%"></div></div><div class="bar-label" id="l1">σ 58.3% · π 41.7%</div></div>
+        <div class="orb"><div class="name">|ω| = 1/2 ②</div><div class="bar"><div class="seg p" id="b2p" style="bottom:0;height:58.3%"></div><div class="seg s" id="b2s" style="bottom:58.3%;height:41.7%"></div></div><div class="bar-label" id="l2">σ 41.7% · π 58.3%</div></div>
+      </div>
+      <p class="hint" style="margin-top:16px">💡 Notice: the |ω| = 3/2 orbital <strong>never</strong> gains σ character — symmetry forbids it. The two |ω| = 1/2 orbitals trade σ back and forth, always summing to 100%. Try λ = 0: everything snaps back to the textbook picture.</p>
+    </div>
+  </div>
+</section>
+
+<section id="framework">
+  <div class="wrap">
+    <span class="kicker">The core idea</span>
+    <h2>"Real space" vs "virtual space"</h2>
+    <p class="sub">The paper's central move, explained with an analogy.</p>
+    <div class="analogy">
+      <div class="a1"><h4>🏟️ Real space = the players on the field</h4><p>Wavefunctions, electron densities, things you can measure. This is where traditional quantum chemistry lives — computing where the electrons actually are.</p></div>
+      <div class="a2"><h4>📖 Virtual space = the rulebook</h4><p>The symmetry labels (σ, π, … or ω) that say <em>how</em> the players are organized. "Virtual space" here means the <strong>symmetry-rule manifold</strong> — not virtual particles, not empty orbitals. Just the rules.</p></div>
+    </div>
+    <div class="card">
+      <p><strong>The insight:</strong> relativity doesn't just nudge the players — it <strong>rewrites the rulebook</strong>. The nonrelativistic rulebook (symmetry group C<sub>∞v</sub>, labels σ/π/δ…) is replaced by the relativistic one (double group C<sub>∞v</sub>*, labels |ω| = 1/2, 3/2, …). The old anomalies of heavy-element chemistry aren't rule-<em>breaking</em> — they're rule-<em>changing</em>.</p>
+      <p>And here's the elegant part: the rulebook changes <strong>discretely</strong> (a symmetry group is either the old one or the new one — there's no halfway group), while the <em>correspondence</em> between old and new labels degrades <strong>continuously</strong>. The three numbers η, I, A measure exactly that degradation.</p>
+    </div>
+    <div class="grid3">
+      <div class="card"><h3>η — the survivor</h3><p><strong>Mixing parameter.</strong> What fraction of the old σ/π labels still correctly describe the relativistic orbitals? 1.00 = textbook intact; 0.722 = CBi⁻ reality. Think of it as a "label survival rate."</p></div>
+      <div class="card"><h3>A — the blur</h3><p><strong>Label ambiguity</strong> (conditional entropy, in nats). Given that you know an orbital's ω label, how uncertain is its σ/π identity? 0 = crystal clear; 0.453 = substantially blurred (max possible: ln 2 ≈ 0.693).</p></div>
+      <div class="card"><h3>I — the memory</h3><p><strong>Mutual information</strong> (nats). How much does knowing ω still tell you about σ/π? Starts at ln 3 ≈ 1.099 nats in the textbook limit, erodes to 0.646 nats under full relativity.</p></div>
+    </div>
+    <figure>
+      <img src="figures/Figure1_orbital_mixing.png" alt="Orbital mixing: nonrelativistic vs relativistic orbital composition">
+      <figcaption><strong>Figure 1 (from the paper).</strong> Left: the textbook σ + 2π picture. Middle/right: the relativistic reality — the two |ω| = 1/2 orbitals split the σ character 58.3/41.7, and |ω| = 3/2 stays pure π.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="lab2" style="background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+  <div class="wrap">
+    <span class="kicker">Interactive · the paper's boldest claim</span>
+    <h2>One number determines everything</h2>
+    <p class="sub">The single-parameter constraint: measure <strong>one</strong> σ fraction, and symmetry + unitarity dictate the rest. Move the slider — you're doing what the paper does.</p>
+    <div class="lab">
+      <h3>🎯 The input: σ₁ (σ character of orbital ①)</h3>
+      <p class="hint">Measured value: 58.3% &nbsp;·&nbsp; your value: <span id="s1Val" class="num">58.3%</span></p>
+      <input type="range" id="s1Slider" min="0" max="1000" value="583" aria-label="Sigma 1 fraction">
+      <div class="readout">
+        <div class="ro"><div class="v num" id="qS2" style="color:#8fc1ff">41.7%</div><div class="k">σ₂ — forced by unitarity</div></div>
+        <div class="ro"><div class="v num" id="qS3" style="color:#8fc1ff">0.0%</div><div class="k">σ₃ — forced to zero by symmetry</div></div>
+        <div class="ro"><div class="v num" id="qEta" style="color:#ffd98a">0.722</div><div class="k">η</div></div>
+        <div class="ro"><div class="v num" id="qA" style="color:#9fe0ae">0.453</div><div class="k">A (nats)</div></div>
+        <div class="ro"><div class="v num" id="qI" style="color:#ff9d9d">0.646</div><div class="k">I (nats)</div></div>
+      </div>
+      <svg class="chart" id="s1Chart" viewBox="0 0 900 260" role="img" aria-label="Metrics versus sigma1"></svg>
+      <p class="hint" style="margin-top:14px">💡 This is a <strong>falsifiable</strong> structure: if a future measurement found σ₃ ≠ 0 beyond numerical noise, the single-pair model would be proven incomplete. That's a feature, not a bug — it's what makes this science rather than curve-fitting.</p>
+    </div>
+    <figure>
+      <img src="figures/Figure5_metric_clarification.png" alt="Comparison of metrics I and A for CBi- and CN-">
+      <figcaption><strong>Figure 5 (from the paper).</strong> The two information metrics side by side, for strongly-relativistic CBi⁻ vs barely-relativistic CN⁻. Note how I is near its ceiling for CN⁻ while A is near zero — the textbook limit.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="validation">
+  <div class="wrap">
+    <span class="kicker">Trust, but verify</span>
+    <h2>How we know the numbers are trustworthy</h2>
+    <p class="sub">Five numerical stress-tests. Click each to see what was checked and what it ruled out.</p>
+    <details class="card val" open><summary><span class="n">1</span> Pairing algorithm <span class="chev">▶</span></summary><div class="body"><p>η requires matching relativistic orbitals to nonrelativistic ones. Under 5% random noise, naive energy-ordering collapses to η = 0.14 (garbage), while optimal (Hungarian) pairing recovers 0.72. <strong>Lesson:</strong> always use optimal pairing.</p><span class="verdict">✓ Rules out: pairing artifacts</span></div></details>
+    <details class="card val"><summary><span class="n">2</span> Noise injection <span class="chev">▶</span></summary><div class="body"><p>Could numerical noise fake the σ/π mixing? At 1% noise, spurious σ character in the forbidden |ω| = 3/2 orbital stays tiny. Faking the observed pattern would need noise far beyond the precision of the quantum chemistry code. <strong>Lesson:</strong> the mixing is physical, not numerical dust.</p><span class="verdict">✓ Rules out: noise artifacts</span></div></details>
+    <details class="card val"><summary><span class="n">3</span> Subspace closure <span class="chev">▶</span></summary><div class="body"><p>The single-parameter math only works if the three bonding orbitals form a closed set. Tests show a 3×3 block of a random matrix is <em>not</em> unitary — but the paper's S-matrix is, to machine precision. <strong>Lesson:</strong> the bonding subspace really is closed; no hidden leakage.</p><span class="verdict">✓ Rules out: missing-orbital effects</span></div></details>
+    <details class="card val"><summary><span class="n">4</span> CN⁻ null test <span class="chev">▶</span></summary><div class="body"><p>Apply the whole pipeline to CN⁻ (barely relativistic). Result: A = 0.006 nats — essentially zero, as theory demands. A claimed value of 0.08 nats would need 5–10% noise, i.e. <strong>systematic error</strong>, not a noise floor. <strong>Lesson:</strong> the pipeline passes its calibration check.</p><span class="verdict">✓ Rules out: miscalibrated pipeline</span></div></details>
+    <details class="card val"><summary><span class="n">5</span> Basis-set incompleteness <span class="chev">▶</span></summary><div class="body"><p>Model finite basis sets as noise: at triple-zeta quality (what the paper uses), spurious σ character is &lt; 0.01% and η, A are already converged to the complete-basis limit. <strong>Lesson:</strong> the results aren't a basis-set artifact.</p><span class="verdict">✓ Rules out: basis-set artifacts</span></div></details>
+  </div>
+</section>
+
+<section id="family" style="background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+  <div class="wrap">
+    <span class="kicker">The bigger picture</span>
+    <h2>The family portrait: CN⁻ → CBi⁻</h2>
+    <p class="sub">Same bond, heavier atoms. Watch the textbook picture erode as relativity takes over.</p>
+    <figure>
+      <img src="figures/Figure4_homologous_trends.png" alt="Mixing parameter and mutual information across the homologous series">
+      <figcaption><strong>Figure 4 (from the paper).</strong> η falls monotonically with atomic number Z — the heavier the partner atom, the less the old σ/π labels survive. CBi⁻ (Z = 83) sits at the relativistic extreme.</figcaption>
+    </figure>
+    <figure>
+      <img src="figures/Figure3_lambda_scan.png" alt="Lambda-driven restructuring: smooth crossover">
+      <figcaption><strong>Figure 3 (from the paper).</strong> The smooth crossover driven by spin–orbit coupling strength λ. Note this is a symmetry-constrained model interpolation (not a direct ab initio SOC-scaling calculation) — the steepest change sits near λ ≈ 0.55, with no discontinuity: a crossover, not a phase transition.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="why">
+  <div class="wrap">
+    <span class="kicker">So what?</span>
+    <h2>Why should you care?</h2>
+    <div class="grid3">
+      <div class="card"><h3>⚗️ For chemists</h3><p>Heavy-element bonding stops being an "exception" and becomes a <strong>different rulebook</strong> — one you can now quantify, predict, and test. The framework ports to any heavy-element system.</p></div>
+      <div class="card"><h3>🧲 For materials scientists</h3><p>Bismuth chemistry underpins emerging catalysts, topological materials, and more. Understanding Bi–C bonding at this level is prerequisite to designing with it.</p></div>
+      <div class="card"><h3>🔭 For everyone else</h3><p>It's a clean case study of a general phenomenon: <strong>rules themselves can be dynamical objects</strong> that reorganize when the physical regime changes. The information-dynamics language for that may travel far beyond chemistry.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="deeper" style="background:#fff;border-top:1px solid var(--line)">
+  <div class="wrap">
+    <span class="kicker">Go deeper</span>
+    <h2>Paper, code, data</h2>
+    <p class="sub">Everything is open. Reproduce it, break it, extend it.</p>
+    <div class="grid3">
+      <div class="card"><h3>📄 The paper</h3><p>Huang et al., <em>Relativistic Bond Reconstruction in Chemical Bonding: An Information Dynamics Perspective on the CBi⁻ Molecular Ion</em>.</p><p><a href="https://doi.org/10.5281/zenodo.21734951">doi.org/10.5281/zenodo.21734951</a> (Zenodo, open access)</p></div>
+      <div class="card"><h3>💻 The code</h3><p>Full reproducible pipeline: S-matrix analysis, figure generation, and all five validation experiments.</p><p><a href="https://github.com/hkaiopen/CBi_ChemicalBond">github.com/hkaiopen/CBi_ChemicalBond</a></p></div>
+      <div class="card"><h3>🔬 The experiment</h3><p>Kahraman et al., <em>Science</em> 2026 — the photoelectron spectroscopy that started it all: the first direct evidence of relativistic triple-bond collapse.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <strong style="color:#e8eef7">About this page</strong><br>
+      Interactive companion to Huang, Liu &amp; Huang (2026). Built from the paper's published analysis pipeline<br>
+      (<a href="https://github.com/hkaiopen/CBi_ChemicalBond/tree/main/Update">Update/</a>: analysis_results.json, S_matrix_CBi.csv, figures, logs).<br>
+      All interactive numbers are computed live in your browser from the paper's equations — no server, no tracking.
+    </div>
+    <div style="text-align:right">Questions? <a href="https://github.com/hkaiopen/CBi_ChemicalBond">Open an issue on GitHub</a></div>
+  </div>
+</footer>
+
+<script>
+"use strict";
+/* ---------- data from analysis_results.json (Update/) ---------- */
+const LAM = [
+  {l:0.00, eta:1.0000, I:1.0986, A:0.0000},
+  {l:0.20, eta:0.9869, I:1.0343, A:0.0643},
+  {l:0.40, eta:0.9488, I:0.9180, A:0.1806},
+  {l:0.55, eta:0.9055, I:0.8264, A:0.2722},
+  {l:0.60, eta:0.8886, I:0.7977, A:0.3009},
+  {l:0.80, eta:0.8109, I:0.7011, A:0.3976},
+  {l:1.00, eta:0.7220, I:0.6457, A:0.4529}
+];
+const THMAX = 40.222334 * Math.PI/180;
+function interp(l, key){
+  if(l<=LAM[0].l) return LAM[0][key];
+  for(let i=1;i<LAM.length;i++){
+    if(l<=LAM[i].l){
+      const a=LAM[i-1], b=LAM[i], t=(l-a.l)/(b.l-a.l);
+      return a[key]+t*(b[key]-a[key]);
+    }
+  }
+  return LAM[LAM.length-1][key];
+}
+/* metrics from sigma1 via the S-matrix */
+function metricsFromSigma1(s1){
+  s1=Math.min(0.999999,Math.max(0.000001,s1));
+  const th=Math.acos(Math.sqrt(s1));
+  const c2=Math.cos(th)**2, s2=Math.sin(th)**2;
+  const eta=(1+2*c2)/3;
+  const H1=-(s1*Math.log(s1)+(1-s1)*Math.log(1-s1));
+  const A=2*H1/3;
+  // I = sum P(i,j) ln(P(i,j)/(P(i)P(j))), P(i,j)=|Sij|^2/3, P(i)=P(j)=1/3
+  const S=[[0,0,1],[Math.cos(th),Math.sin(th),0],[-Math.sin(th),Math.cos(th),0]];
+  let I=0;
+  for(let i=0;i<3;i++)for(let j=0;j<3;j++){
+    const p=(S[i][j]**2)/3;
+    if(p>1e-12) I+=p*Math.log(p/((1/3)*(1/3)));
+  }
+  return {s2:1-s1, th:th*180/Math.PI, eta, A, I};
+}
+/* ---------- lab 1: lambda slider ---------- */
+const lamSlider=document.getElementById('lamSlider');
+function drawLamChart(lam){
+  const svg=document.getElementById('lamChart');
+  const W=900,H=300,pl=56,pr=16,pt=18,pb=40;
+  const X=l=>pl+(W-pl-pr)*l, Y=v=>pt+(H-pt-pb)*(1-(v-0.15)/(1.15-0.15));
+  let s=`<line x1="${pl}" y1="${Y(0.15)}" x2="${W-pr}" y2="${Y(0.15)}" stroke="rgba(255,255,255,.25)"/>`;
+  [0.2,0.4,0.6,0.8,1.0,1.1].forEach(v=>{
+    s+=`<line x1="${pl}" y1="${Y(v)}" x2="${W-pr}" y2="${Y(v)}" stroke="rgba(255,255,255,.08)"/><text x="${pl-8}" y="${Y(v)+4}" fill="#9db4d0" font-size="11" text-anchor="end">${v.toFixed(1)}</text>`;
+  });
+  [0,0.2,0.4,0.6,0.8,1].forEach(v=>{
+    s+=`<text x="${X(v)}" y="${H-14}" fill="#9db4d0" font-size="11" text-anchor="middle">λ=${v.toFixed(1)}</text>`;
+  });
+  const series=[['eta','#6aa7ff'],['I','#ff7b7b'],['A','#7ed491']];
+  series.forEach(([k,col])=>{
+    let d='';
+    for(let i=0;i<=100;i++){const l=i/100; d+=(i?'L':'M')+X(l).toFixed(1)+' '+Y(interp(l,k)).toFixed(1)+' ';}
+    s+=`<path d="${d}" fill="none" stroke="${col}" stroke-width="2.5"/>`;
+  });
+  LAM.forEach(p=>{
+    [['eta','#6aa7ff'],['I','#ff7b7b'],['A','#7ed491']].forEach(([k,col])=>{
+      s+=`<circle cx="${X(p.l)}" cy="${Y(p[k])}" r="4" fill="${col}"/>`;
+    });
+  });
+  const lx=X(lam);
+  s+=`<line x1="${lx}" y1="${pt}" x2="${lx}" y2="${H-pb}" stroke="#fff" stroke-width="1.5" stroke-dasharray="5,4" opacity=".7"/>`;
+  [['eta','#6aa7ff'],['I','#ff7b7b'],['A','#7ed491']].forEach(([k,col])=>{
+    s+=`<circle cx="${lx}" cy="${Y(interp(lam,k))}" r="6.5" fill="${col}" stroke="#fff" stroke-width="2"/>`;
+  });
+  svg.innerHTML=s;
+}
+function setBar(sig,pi,sigEl,piEl,labEl){
+  const S=(sig*100), P=(pi*100);
+  sigEl.style.height=S+'%'; sigEl.style.bottom=P+'%';
+  piEl.style.height=P+'%'; piEl.style.bottom='0';
+  labEl.textContent=`σ ${S.toFixed(1)}% · π ${P.toFixed(1)}%`;
+}
+function updateLab1(){
+  const lam=lamSlider.value/100;
+  document.getElementById('lamVal').textContent=lam.toFixed(2);
+  const th=THMAX*lam, s1=Math.cos(th)**2, s2=Math.sin(th)**2;
+  document.getElementById('roEta').textContent=interp(lam,'eta').toFixed(3);
+  document.getElementById('roI').textContent=interp(lam,'I').toFixed(3);
+  document.getElementById('roA').textContent=interp(lam,'A').toFixed(3);
+  document.getElementById('roTh').textContent=(th*180/Math.PI).toFixed(1)+'°';
+  drawLamChart(lam);
+  setBar(0,1,document.getElementById('b0s'),document.getElementById('b0p'),document.getElementById('l0'));
+  setBar(s1,s2,document.getElementById('b1s'),document.getElementById('b1p'),document.getElementById('l1'));
+  setBar(s2,s1,document.getElementById('b2s'),document.getElementById('b2p'),document.getElementById('l2'));
+}
+lamSlider.addEventListener('input',updateLab1);
+/* ---------- lab 2: sigma1 slider ---------- */
+const s1Slider=document.getElementById('s1Slider');
+function drawS1Chart(s1){
+  const svg=document.getElementById('s1Chart');
+  const W=900,H=260,pl=56,pr=16,pt=18,pb=40;
+  const X=v=>pl+(W-pl-pr)*v, Y=v=>pt+(H-pt-pb)*(1-v/1.2);
+  let s='';
+  [0,0.2,0.4,0.6,0.8,1.0,1.2].forEach(v=>{
+    s+=`<line x1="${pl}" y1="${Y(v)}" x2="${W-pr}" y2="${Y(v)}" stroke="rgba(255,255,255,.08)"/><text x="${pl-8}" y="${Y(v)+4}" fill="#9db4d0" font-size="11" text-anchor="end">${v.toFixed(1)}</text>`;
+  });
+  [0,0.2,0.4,0.6,0.8,1].forEach(v=>{
+    s+=`<text x="${X(v)}" y="${H-14}" fill="#9db4d0" font-size="11" text-anchor="middle">${(v*100).toFixed(0)}%</text>`;
+  });
+  s+=`<text x="${pl}" y="${H-14-18}" fill="#9db4d0" font-size="11">σ₁ →</text>`;
+  const cols={eta:'#ffd98a',A:'#7ed491',I:'#ff7b7b'};
+  ['eta','A','I'].forEach(k=>{
+    let d='';
+    for(let i=0;i<=100;i++){const v=i/100,m=metricsFromSigma1(v);d+=(i?'L':'M')+X(v).toFixed(1)+' '+Y(m[k]).toFixed(1)+' ';}
+    s+=`<path d="${d}" fill="none" stroke="${cols[k]}" stroke-width="2.5"/>`;
+  });
+  const m=metricsFromSigma1(s1), lx=X(s1);
+  s+=`<line x1="${lx}" y1="${pt}" x2="${lx}" y2="${H-pb}" stroke="#fff" stroke-width="1.5" stroke-dasharray="5,4" opacity=".7"/>`;
+  ['eta','A','I'].forEach(k=>{
+    s+=`<circle cx="${lx}" cy="${Y(m[k])}" r="6.5" fill="${cols[k]}" stroke="#fff" stroke-width="2"/>`;
+  });
+  // marker at the paper's measured value
+  const mx=X(0.583);
+  s+=`<line x1="${mx}" y1="${pt}" x2="${mx}" y2="${H-pb}" stroke="#8fc1ff" stroke-width="1" stroke-dasharray="3,3" opacity=".55"/><text x="${mx}" y="${pt+2}" fill="#8fc1ff" font-size="11" text-anchor="middle">measured 58.3%</text>`;
+  svg.innerHTML=s;
+}
+function updateLab2(){
+  const s1=s1Slider.value/1000;
+  const m=metricsFromSigma1(s1);
+  document.getElementById('s1Val').textContent=(s1*100).toFixed(1)+'%';
+  document.getElementById('qS2').textContent=(m.s2*100).toFixed(1)+'%';
+  document.getElementById('qS3').textContent='0.0%';
+  document.getElementById('qEta').textContent=m.eta.toFixed(3);
+  document.getElementById('qA').textContent=m.A.toFixed(3);
+  document.getElementById('qI').textContent=m.I.toFixed(3);
+  drawS1Chart(s1);
+}
+s1Slider.addEventListener('input',updateLab2);
+updateLab1(); updateLab2();
+</script>
+</body>
+</html>
