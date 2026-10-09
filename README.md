@@ -6,9 +6,25 @@ This repository contains the Python code and data for the manuscript:
 
 ## Paper Link
 
-https://doi.org/10.5281/zenodo.21734951
+https://doi.org/10.5281/zenodo.
 
 ---
+---
+## Interactive Explainer
+
+**[Open the interactive explainer](Update/interactive.html)** — a visual, jargon-light walkthrough of the paper, written in English for busy scientists and non-chemists.
+
+- 30-second takeaway, plain-language experiment story, and a "real space vs virtual space" analogy
+- Two live labs: drag the lambda slider to watch eta / I / A and orbital mixing evolve; drag the sigma1 slider to explore the single-parameter constraint — all numbers computed live in your browser from the paper's equations
+- The five numerical validation experiments as expandable cards
+- All five paper figures embedded
+
+No build step, no server, no tracking — just open `Update/interactive.html` in any modern browser. (Tip: enable GitHub Pages on this repository to share it as a live link.)
+
+---
+
+---
+
 
 ## Key Conclusions
 
@@ -58,6 +74,7 @@ The main findings are:
 | analysis_results.json | All computed values: S-matrix, eta, I, A, lambda-scan data, homologous series data, limits |
 | S_matrix_CBi.csv | Full 3x3 unitary overlap matrix (rows: |omega|=3/2, |omega|=1/2(1), |omega|=1/2(2); cols: sigma, pi_1, pi_2) |
 | figures/ | Directory for generated figure outputs |
+| interactive.html | Interactive explainer webpage (English, for non-specialists): live lambda/sigma1 sliders, validation cards, embedded figures |
 
 ---
 
