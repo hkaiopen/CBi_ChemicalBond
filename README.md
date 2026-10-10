@@ -2,7 +2,7 @@
 
 This repository contains the Python code and data for the manuscript:
 
-**Relativistic Bond Reconstruction in the CBi⁻ Molecular Ion: An Information Dynamics Perspective**
+**Relativistic Bond Reconstruction in the CBi⁻ Molecular Ion: An Information Dynamics Perspective on the CBi⁻ Molecular Ion**
 
 ## Paper Link
 
