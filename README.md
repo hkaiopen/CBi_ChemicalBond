@@ -6,7 +6,7 @@ This repository contains the Python code and data for the manuscript:
 
 ## Paper Link
 
-https://doi.org/10.5281/zenodo.
+https://doi.org/10.5281/zenodo.21734951
 
 ---
 ---
