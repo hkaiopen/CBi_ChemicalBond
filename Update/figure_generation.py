@@ -344,8 +344,13 @@ def plot_figure4(data=None):
                     color=COLORS['red'])
 
     Z_fit = np.linspace(6, 86, 200)
-    eta_fit_vals = 0.99 * (1 - (Z_fit - 7) / (83 - 7)) + \
-                   0.722 * ((Z_fit - 7) / (83 - 7))
+    # Exponential guide: eta(Z) = 1 - a*(1-exp(-k*(Z-7))), fit to the data
+    from scipy.optimize import curve_fit as _cf
+    def _emodel(z, a, k):
+        return 1 - a * (1 - np.exp(-k * (z - 7)))
+    (_a, _k), _ = _cf(_emodel, np.array(Z_vals), np.array(eta_vals),
+                      p0=[0.3, 0.05])
+    eta_fit_vals = _emodel(Z_fit, _a, _k)
     ax.plot(Z_fit, eta_fit_vals, '--', color=COLORS['blue'], linewidth=1.5,
             alpha=0.7, label=r'$\eta$ fit')
 
