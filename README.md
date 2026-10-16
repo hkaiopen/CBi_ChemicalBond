@@ -6,6 +6,8 @@ This repository contains the Python code and data for the manuscript:
 
 ## Paper Link
 
+https://doi.org/10.26434/chemrxiv.15010457/v1
+
 https://doi.org/10.5281/zenodo.21734951
 
 ---
@@ -152,7 +154,8 @@ Note: This legacy script uses hardcoded values from the original analysis. For c
 
 ## Citation
 
-Huang, K., Liu, H. & Huang, Z. (2026). Relativistic Bond Reconstruction in Chemical Bonding: An Information Dynamics Perspective on the CBi⁻ Molecular Ion. Zenodo. https://doi.org/10.5281/zenodo.21734951
+Kai Huang, Hongkui Liu, Ziwei Huang. Relativistic Bond Reconstruction in Chemical Bonding: An Information Dynamics Perspective on the CBi− Molecular Ion. ChemRxiv. 
+DOI: https://doi.org/10.26434/chemrxiv.15010457/v1
 
 ---
 
